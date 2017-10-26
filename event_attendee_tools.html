@@ -21,9 +21,9 @@ function scrollToAnchor(aid){
 <div class="ak-grid-row">
 <div class="ak-grid-col ak-grid-col-12-of-12">
 {% if campaign.use_title %}
-<h2>Event: {{ event.title }}</h2>
+<h2>Team: {{ event.title }}</h2>
 {% else %}
-<h2>Event: {{ campaign.local_title }}</h2>
+<h2>Team: {{ campaign.local_title }}</h2>
 {% endif %}
 {% if campaign.use_title %}
 <h3>{{ campaign.local_title }}</h3>
@@ -35,21 +35,21 @@ function scrollToAnchor(aid){
 </div> <!-- .banding-black -->
 
 <div class="ak-grid-row event-rsvpthanks">
-<div class="ak-grid-col ak-grid-col-12-of-12 textA textBlue">You are confirmed for this event.</div>
+<div class="ak-grid-col ak-grid-col-12-of-12 textA textBlue">You are confirmed for team membership.</div>
 </div> <!-- .event-rsvpthanks -->
 
 <div class="ak-grid-row">
 
 <div class="ak-grid-col ak-grid-col-6-of-12">
 	<div id="event-attendee-details">
-	<div class="subA">Event Details</div>
+	<div class="subA">Team Details</div>
 	{% include "./event_attendee_details.html" %}
 	</div>
 	<div class="event-tools">
-	<div class="subA">Event tools</div>
+	<div class="subA">Team tools</div>
 	<div id="event-attendee-links">
 	{{ form.tools_sidebar|safe }}
-	<span><a href="../cancel_signup/?akid={{ args.akid }}" class="buttonB1 icon-cancel">Cancel signup</a></span>
+	<span><a href="../cancel_signup/?akid={{ args.akid }}" class="buttonB1 icon-cancel">Cancel membership</a></span>
 	<span><a href="#emailspot" onclick="$('div.contact-form').slideDown('slow'); $(this).parent('li.narrower').hide();scrollToAnchor('emailspot');" class="buttonB1 icon-email">Email host</a></span>
 	</div>
 	{% include "./event_contact.html" %}
@@ -76,21 +76,21 @@ function scrollToAnchor(aid){
 
 {% else %}
     {% if event.is_inactive %}
-        <h2>Sorry, this event has been cancelled.</h2>
+        <h2>Sorry, this team is inactive.</h2>
     {% endif %}
     {% if not signup %}
         {% comment %}
-            This message also shows if you were removed by the host.
+            This message also shows if you were removed by the Team Leader.
         {% endcomment %}
         {% if args.cancel_success %}
-            <h2>Your signup was cancelled successfully.</h2>
+            <h2>Your membership was cancelled successfully.</h2>
         {% else %}
-            <h2>You aren't currently signed up for this event.</h2>
+            <h2>You aren't currently signed up for this team.</h2>
             <p>If you think this is a mistake, check that you cut-and-pasted the entire link to this page.</p>
         {% endif %}
     {% endif %}
     <div>
-        <a href="/event/{{ campaign.local_name }}/?akid={{args.akid}}&amp;zip={{args.zip}}">Search for another event</a>
+        <a href="/event/{{ campaign.local_name }}/?akid={{args.akid}}&amp;zip={{args.zip}}">Search for another team</a>
     </div>
 {% endif %}
 {% endif %}

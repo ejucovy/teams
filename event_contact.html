@@ -3,7 +3,7 @@
 <a name="contact{% if to %}-{{to}}{% endif %}"></a>
 
 <div class="ak-nodisplay-if-js contact-form contact{% if to %}-{{to}}{% endif %} ak-field-box ak-margin-1">
-    <div class="subB" id="emailspot">Email {% if to == 'attendees' %}attendee{% else %}Host{% endif %}(s)</div>
+    <div class="subB" id="emailspot">Email {% if to == 'attendees' %}member{% else %}Team Leader{% endif %}(s)</div>
     {% if need_form != 'no' %}
     <form name="contact{% if to %}-{{to}}{% endif %}" method="post" action="/event/{{ campaign.local_name }}/{{ event.id }}/contact/" accept-charset="utf-8">
         <input type="hidden" name="page" value="{{ page.name }}">
@@ -30,10 +30,10 @@
 	                <span class="ak-readonly-value">
 	                    <span class="header-to header-val">
 	                        {% if signup.role == 'attendee' %}
-	                            Your event host
+	                            Your Team Leader
 	                        {% else %}
 	                            <span class="if-js to-count">{{signups|length}}</span> 
-	                            {% if to == 'attendees' %}attendee{% else %}co-host{% endif %}{% if signups|length > 1 %}(s){% endif %}
+	                            {% if to == 'attendees' %}member{% else %}co-Team Leader{% endif %}{% if signups|length > 1 %}(s){% endif %}
 	                        {% endif %}
 	                    </span>
 	                </span>

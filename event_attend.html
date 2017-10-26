@@ -23,7 +23,7 @@
                 {% if not update %}
                     <h2>{{ page.title }}</h2>
                 {% else %}
-                    <h2>Update your RSVP:</h2>
+                    <h2>Update your Membership:</h2>
                 {% endif %}
             </div>
         </div>
@@ -62,7 +62,7 @@
             </div>
 
             <div class="ak-grid-col ak-grid-col-6-of-12">
-				<div class="subA">Signup for Event</div>
+				<div class="subA">Join a Team</div>
                 <div id="event-attend-form" class="{{templateset.custom_fields.field_errors_class|default:"ak-errs-below"}}">
                     <div class="{{templateset.custom_fields.field_labels_class|default:"ak-labels-overlaid"}}">
                         {% if not update %}
@@ -88,18 +88,18 @@
                             <input id="id_event_signup_ground_rules" type="checkbox" name="event_signup_ground_rules" value="1">
                             <label class="ak-checkbox-label" for="id_event_signup_ground_rules">
                                 <strong>Required:</strong>  
-                                I agree to <a href="#" onclick="$('#id_ground_rules_text').show(); $(this).before(this.innerHTML + ' (below)').hide(); return false;">the rules</a> for signing up for an event.
+                                I agree to <a href="#" onclick="$('#id_ground_rules_text').show(); $(this).before(this.innerHTML + ' (below)').hide(); return false;">the rules</a> for signing up for a team.
                             </label>
                         </div>
                         <blockquote id="id_ground_rules_text" class="nojs">
-                            <div class="strong">Event ground rules:</div>
+                            <div class="strong">Team ground rules:</div>
                             {% include_tmpl form.ground_rules %}
                         </blockquote>
                     {% else %}
                         <input type="hidden" name="event_signup_ground_rules" value="1">
                     {% endif %}
                     <div>
-                    <button type="submit" class="ak-submit-button">{% if update %}Update RSVP{% else %}RSVP to attend{% endif %}</button>
+                    <button type="submit" class="ak-submit-button">{% if update %}Update Membership{% else %}RSVP to attend{% endif %}</button>
                     </div>
                 </div>   
                 <div class="event-share">
@@ -122,24 +122,19 @@
             <div class="ak-grid-col ak-grid-col-12-of-12">
                 {% if event.is_inactive or event.is_full or event.is_in_past or event.is_awaiting_confirmation %}
                     {% if event.is_inactive %}
-                    <h2>Sorry, this event was cancelled.</h2>
+                    <h2>Sorry, this team is inactive.</h2>
                 {% elif event.is_in_past %}
-                    <h2>Sorry, it's too late to sign up for this event.</h2>
+                    <h2>Sorry, this team is inactive.</h2>
                 {% elif event.is_awaiting_confirmation %}
-                    <h2>Sorry, the event host has not yet confirmed this event.</h2>
-                {% elif event.is_full %}
-                    <h2>Sorry, this event is full. <a href="https://map.peoplepower.org">Search for another event to attend</a>, or <a href="https://go.peoplepower.org/signup/host_new">host your own</a>.</h2><h4>If you have already signed up to attend this event, here are the basic details:</h4>
-                    <div id="event-search-results">
-                    {% with 1 as hide_map %}
-                    {% include "./event_search_results.html" %}
+                    <h2>Sorry, the Team Leader has not yet confirmed this team.</h2>
                     {% endwith %}
                 </div>
                     {% endif %}
                 {% else %}
-                    <h2>We&rsquo;ll confirm this event soon! Come back later.</h2>
+                    <h2>We&rsquo;ll confirm this team soon! Come back later.</h2>
                 {% endif %}
                 <div>
-                    <a href="https://map.peoplepower.org/#zipcode={{args.zip}}&distance=50&sort=distance&f%5B%5D=launch">Search for another event</a>
+                    <a href="https://map.peoplepower.org/#zipcode={{args.zip}}&distance=50&sort=distance&f%5B%5D=launch">Search for another team</a>
                 </div>
         
             </div>

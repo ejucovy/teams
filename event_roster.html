@@ -9,7 +9,7 @@
 
 <div class="signup-list {{signups.role}}-list ak-clearfix">
     <h3>
-        {% if signups.role == 'host' %}Cohost{% else %}Attendee{% endif %}{{ signups|length|pluralize }} ({{ signups|length }}  total)
+        {% if signups.role == 'host' %}Co-Team Leader{% else %}Member{% endif %}{{ signups|length|pluralize }} ({{ signups|length }}  total)
     </h3>
     <form id="manage-{{signups.role}}" onvalidate="return validateRoster(this)" onconfirm="return confirmRoster(this)" name="manage-{{signups.role}}" method="post" action="/event/{{campaign.local_name}}/{{event.id}}/manage_signups" accept-charset="utf-8">
 
@@ -28,7 +28,7 @@
                 <th class="name-col">Name</th>
                 <th class="phone-col">Phone</th>
                 {% if event.is_in_past and signups.role == 'attendee' %}
-                    <th class="attended-col">Attended</th>
+                    <th class="attended-col">Member</th>
                 {% endif %}
             </thead>
             <tbody>
@@ -52,12 +52,12 @@
         <div class="signup-list-controls ak-clearfix">
             <input type="submit" class="email if-js ak-btn-short" value="Email">
             {% if signups.role == 'attendee' %}
-                <input type="submit" confirm-message="Really remove attendee? This can't be undone." name="remove" value="Remove" class="remove ak-btn-short">
+                <input type="submit" confirm-message="Really remove member? This can't be undone." name="remove" value="Remove" class="remove ak-btn-short">
                 {% if event.is_in_past %}
-                    <input type="submit" name="change-attended" value="Change Attendance" class="change-attended ak-btn-short">
+                    <input type="submit" name="change-attended" value="Change Membership" class="change-attended ak-btn-short">
                 {% endif %}
             {% endif %}
-            <input type="submit" name="change-role" value="Make {% if signups.role == 'host' %}attendee{% else %}co-host{% endif %}" class="change-role ak-btn-short">
+            <input type="submit" name="change-role" value="Make {% if signups.role == 'host' %}member{% else %}co-Team Leader{% endif %}" class="change-role ak-btn-short">
         </div>
 
         {% with 'no' as need_form %}

@@ -23,13 +23,13 @@
 {% endif %}
 {% if event.directions %}
     <tr class="ak-event-directions">
-        <th>Directions to event:</th>
+        <th>Directions:</th>
         <td>{{ event.directions }}</td>
     </tr>
 {% endif %}
 {% if event.note_to_attendees %}
     <tr class="ak-event-note-to-attendees">
-        <th>Note to attendees:</th>
+        <th>Note to members:</th>
         <td>{{ event.note_to_attendees }}</td>
     </tr>
 {% endif %}
@@ -37,7 +37,7 @@
     <tr class="ak-event-privacy">
         <th></th>
         <td>
-            <label>Event is {% if event.is_private %}private{% else %}public{% endif %}.</label>
+            <label>Team is {% if event.is_private %}private{% else %}public{% endif %}.</label>
         </td>
     </tr>
 {% endif %}

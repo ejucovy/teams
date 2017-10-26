@@ -17,13 +17,13 @@
 {% if events|is_defined %}
     <input type="hidden" id="id_have_events" name="have_events" value="1">
     {% if not events|length %}
-        <h3>No events found near {{ place|default:"your location" }}.</h3>
+        <h3>No teams found near {{ place|default:"your location" }}.</h3>
     {% else %}
 
         
         {% for event in events %}
             <div class="ak-field-box">
-				<div class="subA">Event</div>
+				<div class="subA">Team</div>
                 {% if campaign.use_title and campaign.show_title %}
                     <p class="ak-event-title"><a href="/event/{{ campaign.local_name }}/{{event.id}}/signup/?akid={{args.akid}}&amp;zip={{args.zip}}">{{ event.title }}</a></p>
                 {% else %}
@@ -80,12 +80,12 @@
 
 {% if campaign.show_attendee_count %}
 <div class="ak-event-attendee-count">
-<strong>Attendee count:</strong>
-<div class="ak-event-attendee-count-output">{{ event.attendee_count }} attendee{{ event.attendee_count|pluralize }}</div>
+<strong>Member count:</strong>
+<div class="ak-event-attendee-count-output">{{ event.attendee_count }} member{{ event.attendee_count|pluralize }}</div>
 </div>
 {% endif %}
 <div style="margin-bottom: 20px;">
-<strong>Host{{ event.host_signups|length|pluralize }}:</strong>
+<strong>Lead{{ event.host_signups|length|pluralize }}:</strong>
 <div>{% for host in event.obj.host_signups %}{{host.user}}{% if not forloop.last%}, {%endif%}{%endfor%}</div>
 </div>
 
@@ -125,7 +125,7 @@
     {% endif %}
     {% if campaign.public_create_page %}
         <div>
-            <a class="ak-button ak-event-create" href="/event/{{ campaign.name }}/create/">Create your own event</a>
+            <a class="ak-button ak-event-create" href="/event/{{ campaign.name }}/create/">Create your own team</a>
         </div>
     {% endif %}
 {% endif %}

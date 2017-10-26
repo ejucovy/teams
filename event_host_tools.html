@@ -139,14 +139,14 @@
     <div class="ak-grid-row">
         <div class="ak-grid-col ak-grid-col-12-of-12">
             {% if event.is_in_past and event.starts_at > '2017-10-01'|load_datetime:"%Y-%m-%d" and event.starts_at < '2017-10-02'|load_datetime:"%Y-%m-%d" and campaign.local_name == 'voting_rights' %}
-                <h3>Thanks for hosting a Let People Vote Launch event. Now please 
-                <a href="https://go.peoplepower.org/signup/attendee-sign-form/?prefill=1&akid={{args.akid}}&action_event_id={{event.id}}">fill out this form to enter your attendees!</a></h3>
+                <h3>Thanks for creating a People Power team. Now please 
+                <a href="https://go.peoplepower.org/signup/attendee-sign-form/?prefill=1&akid={{args.akid}}&action_event_id={{event.id}}">fill out this form to enter your members!</a></h3>
                 <br>
             {% endif %}
             {% if campaign.use_title %}
                 <h2>{{ campaign.local_title }}: {{ event.title }}</h2>
             {% else %}
-                <h2>{{ campaign.local_title }}: Event Tools</h2>
+                <h2>{{ campaign.local_title }}: Team Tools</h2>
             {% endif %}
 
             <!-- Message from mothership -->
@@ -163,7 +163,7 @@
             <!-- Tools -->
             <div class="ak-bar-holder">
                 <div class="ak-bar ak-field-box" id="event-host-tools">
-                    <h3>Manage Event</h3>
+                    <h3>Manage Team</h3>
                     <ul id="event-host-links">
                         {{ form.tools_sidebar|safe }}
                         {% if user_is_manager %}
@@ -172,23 +172,23 @@
                             {% endif %}
                         </li>
                         {% endif %}
-                        <li><a href="/event/{{ campaign.local_name }}/create/?action_id={{ action.id }}&amp;update=1&amp;want_prefill_data=1">Edit event details</a></li>
+                        <li><a href="/event/{{ campaign.local_name }}/create/?action_id={{ action.id }}&amp;update=1&amp;want_prefill_data=1">Edit team details</a></li>
                         {% if cohosts %}
-                        <li class="if-js"><a class="jump-link" id="email-cohosts-link" href="#contact-cohosts">Email cohost{{ cohosts|length|pluralize }}</a></li>
+                        <li class="if-js"><a class="jump-link" id="email-cohosts-link" href="#contact-cohosts">Email co-Team Lead{{ cohosts|length|pluralize }}</a></li>
                         {% endif %}
                         {% if attendees %}
-                        <li class="if-js"><a class="jump-link" id="email-attendees-link" href="#contact-attendees">Email attendee{{ attendees|length|pluralize }}</a></li>
+                        <li class="if-js"><a class="jump-link" id="email-attendees-link" href="#contact-attendees">Email member{{ attendees|length|pluralize }}</a></li>
                         {% else %}
                         <!-- Flag that the functionality will be there -->
                         <li class="if-js">
-                            Email attendees<br>
-                            (Available after people sign up for your event.)
+                            Email members<br>
+                            (Available after people sign up for your team.)
                         </li>
                         {% endif %}
                         {% if event.is_open_for_signup and page.pagefollowup.send_taf %}
                         <li class="if-js"><a class="jump-link" id="invite-friends-link" href="#invite-friends">Invite friends</a></li>
                         {% endif %}
-                        <li><a confirm-message="Really cancel event? This can't be undone." href="/event/{{ campaign.local_name }}/{{ event.id }}/cancel_event/">Cancel event</a></li>
+                        <li><a confirm-message="Really cancel event? This can't be undone." href="/event/{{ campaign.local_name }}/{{ event.id }}/cancel_event/">Cancel team</a></li>
                         <li><a href="/logout/">Log out</a></li>
                     </ul>
                 </div>
@@ -199,7 +199,7 @@
             <!-- Details -->
             <div id="host-event-details ak-clearfix">
                 <h3>
-                    Event Details 
+                    Team Details 
                     (<a class="ak-underline-on-hover" href="/event/{{ campaign.local_name }}/create/?action_id={{ action.id }}&amp;update=1&amp;want_prefill_data=1">Edit</a>)
                 </h3>
                 {% include "./event_host_details.html" %}
@@ -235,13 +235,13 @@
     <div class="ak-grid-row">
         <div class="ak-grid-col ak-grid-col-12-of-12">
             {% if event.is_inactive %}
-                <h3>This event is no longer active.</h3>
+                <h3>This team is no longer active.</h3>
             {% endif %}
             {% if not signup %}
-                <h3>Sorry, you aren't currently signed up for this event.</h3>
+                <h3>Sorry, you aren't currently signed up for this team.</h3>
                 <p>If you think this is a mistake, check that you cut-and-pasted the entire link to this page.</p>
             {% endif %}
-            <div><a href="/event/{{ campaign.local_name }}/?akid={{args.akid}}&amp;zip={{args.zip}}">Search for another event</a></div>
+            <div><a href="/event/{{ campaign.local_name }}/?akid={{args.akid}}&amp;zip={{args.zip}}">Search for another team</a></div>
         </div>
     </div>
     
