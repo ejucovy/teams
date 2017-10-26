@@ -49,13 +49,86 @@
                     {% if campaign.use_title %}
                         <div>
                             <label for="id_event_title">Team name<span class="ak-required-flag">*</span></label>
-                            <input id="id_event_title" type="text" name="event_title"{% if campaign.id == 9 %} value="‘Let People Vote’ Event"{% endif %}>
+                            <input id="id_event_title" type="text" name="event_title"{% if campaign.id == 9 %} value="‘Let People Vote’ Launch Event"{% endif %}>
                         </div>
                     {% endif %}
+
+                    {% with event_starts_at as date_field %}
+                        <div id="id_event_starts_at_row">
+                            <label for="id_event_starts_at">Start date/time</label>
+                            {% include "./date_picker.html" %}
+                        </div>
+                        {% if campaign.id == 9 %}<p style="font-weight:200;width: 65%;margin-left: 35%;">Note: If you're hosting a launch event, it must be on 10/1 at 7pm ET / 6pm CT / 5pm MT / 4pm PT.</p>{% endif %}
+
+
+                        <script type="text/javascript">
+                            // Replace animation w/instant show, because anim
+                            // breaks tabbing quickly past the date field.
+                            jQuery.fn.showFast = function(speed, callback) {
+                                this.show()
+                                callback()
+                            }
+                            // Removing datepicker doesn't break anything, and
+                            // it might even be useful -- I can imagine users
+                            // being confused when the picker covers up other
+                            // key form fields.
+                            $(function() {
+                                $("#id_event_starts_at_date").datepicker( {
+                                    minDate: 0, showAnim: 'showFast'
+                                } )
+                            } );
+                        </script>
+
+                    {% endwith %}
+
+                    {% if campaign.use_ends_at %}
+                        {% with event_ends_at as date_field %}
+                            <div>
+                                <label for="id_event_ends_at">End time</label>
+                                {% include "./date_picker.html" %}
+                            </div>
+                        {% endwith %}
+                    {% endif %}
+
+                    {% if campaign.allow_private %}
+                        <div id="id_event_is_private_row" class="ak-checkbox-field">
+                            <input id="id_event_is_private" type="checkbox" class="checkbox" name="event_is_private" value="1">
+                            <label class="ak-checkbox-label" for="id_event_is_private">
+                                Make team private
+                            </label>
+                        </div>
+                    {% endif %}
+
+                    <div>
+                        <label for="id_event_max_attendees">Maximum membership</label>
+                        <input id="id_event_max_attendees" type="text" name="event_max_attendees" value="{{ campaign.default_event_size|default:"" }}" size=3>
+                    </div>
 
                     {% include_tmpl form.custom_field_html %}
                 </div>
             </div>
+
+            {% if templateset.custom_fields.event_categories and campaign.id == 2 %}
+            <div id="event-categories">
+              <h3>Team categories</h3>
+              {% with templateset.custom_fields.event_categories|load_json as categories_config %}
+              {% for category in categories_config %}{% if not categories_config|nth:category|nth:"hidden"|default:0 %}
+              <div class="ak-err-below">
+                <input id="id_action_event_category_{{ category }}"
+                       class="checkbox" type="checkbox"
+                       name="action_event_category"
+                       value="{{ category }}"
+                       {% if event and event.custom_fields.category and event.custom_fields.category|force_list|contains:category %}checked{% endif %}
+                >
+                <label for="id_action_event_category_{{ category }}"
+                       class="ak-checkbox-label ak-event-category-checkbox-label">
+                  {{ categories_config|nth:category|nth:"label" }}
+                </label>
+              </div>
+              {% endif %}{% endfor %}
+              {% endwith %}
+            </div>
+            {% endif %}
             
             <div id="event-info">
                 <h3>Team location</h3>
@@ -80,6 +153,10 @@
                             {% include "./country_select.html" %}
                         </div>
                         <div>
+                            <label for="id_event_address1">Street address<span class="ak-required-flag">*</span></label>
+                            <input id="id_event_address1" type="text" name="event_address1">
+                        </div>
+                        <div>
                             <label for="id_event_city">City<span class="ak-required-flag">*</span></label>
                             <input id="id_event_city" type="text" name="event_city" required>
                         </div>
@@ -96,6 +173,9 @@
                             <input id="id_event_zip" type="text" name="event_zip" required>
                         </div>
                         <!-- <div><label for="id_event_phone">Contact phone:</label> <input id="id_event_phone" type="tel" name="event_phone" size="12"></div> -->
+                        {% if campaign.show_address1 %}
+                            <p style="font-weight:200;width: 65%;margin-left: 35%;">NOTE: Team addresses are public.</p>
+                        {% endif %}
                     {% endwith %}
                 </div>
 
@@ -108,14 +188,20 @@
                         Public description<span class="ak-required-flag">*</span>
                         <br><span class="ak-normal">
                             {% if campaign.allow_private %}
-                                For public events, people
+                                For public teams, people
                             {% else %}
                                 People
                             {% endif %}
                             will see this text before signing up
                         </span>
                     </label>
-                    <textarea id="id_event_public_description" name="event_public_description">{% if campaign.id == 9 %}Trump is engaging in an assault on voting rights. We’re going to respond by going on offense at the state and local levels to expand access to the ballot and make our democracy more representative. Join us as we kickoff a big new push to Let People Vote.{% endif %}</textarea>
+                    <textarea id="id_event_public_description" name="event_public_description">{% if campaign.id == 9 %}Trump is engaging in an assault on voting rights. We’re going to respond by going on offense at the state and local levels to expand access to the ballot and make our democracy more representative. Join us at a launch event on Sunday, October 1 as we kickoff a big new push to Let People Vote.{% endif %}</textarea>
+                </div>
+
+                <div>
+                    <label for="id_event_directions">Directions to team</label>
+
+                    <textarea id="id_event_directions" name="event_directions"></textarea>
                 </div>
 
                 <div style="display:none;">
@@ -129,12 +215,24 @@
               <div>
                 <h3>STAFF ONLY</h3>
                 <div class="ak-err-below">
-                  <label>Redirect this team to another team</label>
+                  <label>Redirect this event to another event</label>
                   <input type="text" name="action_replacement_event_id" {% if event.custom_fields.replacement_event_id %}value="{{ event.custom_fields.replacement_event_id }}"{% endif %} placeholder="Enter the replacement event ID"/>
                 </div>
                 <div class="ak-err-below">
                   <label>&nbsp;</label>
                   <input type="text" name="action_replacement_campaign_name" {% if event.custom_fields.replacement_campaign_name %}value="{{ event.custom_fields.replacement_campaign_name }}"{% endif %} placeholder="Enter the campaign name for the replacement event (action, voting_rights)"/>
+                </div>
+                <div class="ak-err-below">
+                  <input id="id_action_event_category_plannedparenthood"
+                         class="checkbox" type="checkbox"
+                         name="action_event_category"
+                         value="plannedparenthood"
+                         {% if event and event.custom_fields.category and event.custom_fields.category|force_list|contains:"plannedparenthood" %}checked{% endif %}
+                  >
+                  <label for="id_action_event_category_plannedparenthood"
+                         class="ak-checkbox-label ak-event-category-checkbox-label">
+                    Add the Planned Parenthood category
+                  </label>
                 </div>
               </div>    
             {% endif %}
@@ -148,8 +246,59 @@
 <div class="ak-grid-row">
     <div class="ak-grid-col ak-grid-col-12-of-12">
         {% if not update %}
+            {% if form.host_requirements|is_nonblank or form.ground_rules|is_nonblank %}
+                <div id="ground-rules">
+                    <h3>Team rules</h3>
+
+                    {% if form.host_requirements %}
+                        <p>Here are the basic requirements for Team Leaders:</p>
+                        <div class="ak-signoff-box ak-errs-below">
+                            <blockquote>
+                                {% include_tmpl form.host_requirements %}
+                            </blockquote>
+                            <div>
+                                <input id="id_event_host_requirements" type="checkbox" name="event_host_requirements" value="1">
+                                <label class="ak-checkbox-label" for="id_event_host_requirements">
+                                    <strong>Required:</strong>
+                                    I can meet the requirements for leading a team.
+                                </label>
+                            </div>
+                        </div>
+                    {% else %}
+                        <input type="hidden" name="event_host_requirements" value="1">
+                    {% endif %}
+
+                    {% if form.ground_rules|is_nonblank %}
+                        <p>Here are the rules for leading a team:</p>
+                        <div class="ak-signoff-box ak-errs-below">
+                            <blockquote>
+                                {% include_tmpl form.ground_rules %}
+                            </blockquote>
+                            <div>
+                                <input id="id_event_host_ground_rules" type="checkbox" name="event_host_ground_rules" value="1">
+                                <label class="ak-checkbox-label" for="id_event_host_ground_rules">
+                                    <strong>Required:</strong>
+                                    I agree to the rules for leading a team.
+                                </label>
+                            </div>
+                        </div>
+                    {% else %}
+                        <input type="hidden" name="event_host_ground_rules" value="1">
+                    {% endif %}
+                </div>
+
+            {% else %}
+                <input type="hidden" name="event_host_requirements" value="1">
+                <input type="hidden" name="event_host_ground_rules" value="1">
+            {% endif %}
+        {% else %}
+            <input type="hidden" name="event_host_requirements" value="1">
+            <input type="hidden" name="event_host_ground_rules" value="1">
+        {% endif %}
+
+        {% if not update %}
         <p>
-			<strong>Next, we&rsquo;ll review your team for approval.</strong>
+            <strong>Next, we&rsquo;ll review your team for approval.</strong>
         </p>
         {% endif %}
 
@@ -181,7 +330,6 @@
      if ( prefill_data.form_name )
          forms.setForm(prefill_data.form_name);
      $(ak.form).deserialize(prefill_data, {overwrite: false});
-
      // Check/uncheck boxes, which deserialize() won't do
      $(ak.form).find('input:checkbox').each(function() {
          if (prefill_data[this.name] && prefill_data[this.name].constructor === Array) {
@@ -190,13 +338,11 @@
              this.checked = prefill_data[this.name] == this.value ? true : false;
          }
      })
-
      // checking for true, not just present
      if ( prefill_data['amount_other'] ) {
          $(ak.form).find('input.amount_radio_button').attr('checked', false)
          $(ak.form).find('input[name=amount_other]').click()
      }
-
      // fire onchange and onclick, for in-field labels etc.
      // unfortunately #id_subscription_consent's onchange turns on
      // suppress_subscribe, so leave it out.
@@ -208,10 +354,8 @@
              $(this).click();
          $(this).change();
      });
-
      // the change events forced above hide errors; show them again
      forms.handleQueryStringErrors()
-
      forms.prefilling = false;
  }
  
@@ -220,7 +364,6 @@
         && actionkit.utils.val(actionkit.form.event_country)
         return country == 'United States' || country == 'US' || !country;
     };
-
     reflectEventCountryChange = function() {
         var is_us = isEventUnitedStates();
         var event_zip = actionkit.form.event_zip,
@@ -245,7 +388,6 @@
             }
         }
     };
-
     actionkitFormReady =  function() {
         if ( (actionkit.form.event_zip && actionkit.form.event_postal)
         || (actionkit.form.event_state && actionkit.form.event_region) ) {
@@ -267,9 +409,7 @@
             }
         }
     };
-
     $(document).ready( function() {
-
         var prev_is_us, now_is_us;
         $(actionkit.form.event_country).focus(function() {
             prev_is_us = isEventUnitedStates();
@@ -280,7 +420,6 @@
             }
         });
     });
-
     $(function() {
         if ( ( ! $('#id_event_starts_at_date[type="text"]').length ) && ! $('#id_event_starts_at_time[type="text"]').length ) {
             $('#id_event_starts_at_row .ak-datetime').wrap('<div class="ak-readonly-value">' );
@@ -316,7 +455,6 @@ function copyEventAddress() {
     $('#event_country').val($('#country').val() || $('#id_country').val() || '').change();
     if ( !$('#id_event_venue').val() )
         $('#id_event_venue').val($('#id_event_venue').attr('if-at-my-house') || '').change()
-
 }
 function clearEventAddress() {
     for (var i=0; i<address_fields.length; ++i)
@@ -344,30 +482,28 @@ $( function () {
 } );
 $(window).load( function() {
 $('label[for="id_mobile_phone"]').html('Mobile phone*');
-	
-	function getParameterByName(name) {
-		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-			results = regex.exec(location.search);
-		return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-	}
-
-
-	var categorychoice = getParameterByName("eventcategory");
-	if (categorychoice == 'plannedparenthood') {
-		$('#id_action_event_category_plannedparenthood').prop('checked', true);
-		$('#event-categories').hide();
-		$('#id_event_title').val('Planned Parenthood Action Event');
-	} else {
-		$('#id_action_event_category_plannedparenthood').closest('div').hide();
-	}
-	if (categorychoice == 'daca') {
-		$('#id_action_event_category_daca').prop('checked', true);
-		$('#event-categories').hide();
-		$('#id_event_title').val('Save DACA Action');
-	}
+    
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+    var categorychoice = getParameterByName("eventcategory");
+    if (categorychoice == 'plannedparenthood') {
+        $('#id_action_event_category_plannedparenthood').prop('checked', true);
+        $('#event-categories').hide();
+        $('#id_event_title').val('Planned Parenthood Action Event');
+    } else {
+        $('#id_action_event_category_plannedparenthood').closest('div').hide();
+    }
+    if (categorychoice == 'daca') {
+        $('#id_action_event_category_daca').prop('checked', true);
+        $('#event-categories').hide();
+        $('#id_event_title').val('Save DACA Action');
+    }
 });
-	
+    
 </script>
 
 {% endblock %}
