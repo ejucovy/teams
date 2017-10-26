@@ -152,7 +152,7 @@
                             <label for="event_country">Country</label>
                             {% include "./country_select.html" %}
                         </div>
-                        <div>
+                        <div style="display: none;">
                             <label for="id_event_address1">Street address<span class="ak-required-flag">*</span></label>
                             <input id="id_event_address1" type="text" name="event_address1">
                         </div>
@@ -198,7 +198,7 @@
                     <textarea id="id_event_public_description" name="event_public_description">{% if campaign.id == 9 %}Trump is engaging in an assault on voting rights. We’re going to respond by going on offense at the state and local levels to expand access to the ballot and make our democracy more representative. Join us at a launch event on Sunday, October 1 as we kickoff a big new push to Let People Vote.{% endif %}</textarea>
                 </div>
 
-                <div>
+                <div style="display: none;">
                     <label for="id_event_directions">Directions to team</label>
 
                     <textarea id="id_event_directions" name="event_directions"></textarea>
