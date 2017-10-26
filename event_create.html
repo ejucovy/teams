@@ -54,7 +54,7 @@
                     {% endif %}
 
                     {% with event_starts_at as date_field %}
-                        <div id="id_event_starts_at_row">
+                        <div id="id_event_starts_at_row" style="display: none;">
                             <label for="id_event_starts_at">Start date/time</label>
                             {% include "./date_picker.html" %}
                         </div>
@@ -83,7 +83,7 @@
 
                     {% if campaign.use_ends_at %}
                         {% with event_ends_at as date_field %}
-                            <div>
+                            <div style="display: none;">
                                 <label for="id_event_ends_at">End time</label>
                                 {% include "./date_picker.html" %}
                             </div>
@@ -99,7 +99,7 @@
                         </div>
                     {% endif %}
 
-                    <div>
+                    <div style="display: none;">
                         <label for="id_event_max_attendees">Maximum membership</label>
                         <input id="id_event_max_attendees" type="text" name="event_max_attendees" value="{{ campaign.default_event_size|default:"" }}" size=3>
                     </div>
