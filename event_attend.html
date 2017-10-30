@@ -21,7 +21,7 @@
         <div class="ak-grid-row titlerow">
             <div class="ak-grid-col ak-grid-col-12-of-12">
                 {% if not update %}
-                    <h2>{{ page.title }}</h2>
+                    <h2>{{ event.title }}</h2>
                 {% else %}
                     <h2>Update your Membership:</h2>
                 {% endif %}
@@ -99,7 +99,7 @@
                         <input type="hidden" name="event_signup_ground_rules" value="1">
                     {% endif %}
                     <div>
-                    <button type="submit" class="ak-submit-button">{% if update %}Update Membership{% else %}RSVP to attend{% endif %}</button>
+                    <button type="submit" class="ak-submit-button">{% if update %}Update Membership{% else %}Join the team{% endif %}</button>
                     </div>
                 </div>   
                 <div class="event-share">
