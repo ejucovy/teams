@@ -123,13 +123,12 @@
                 {% if event.is_inactive or event.is_full or event.is_in_past or event.is_awaiting_confirmation %}
                     {% if event.is_inactive %}
                     <h2>Sorry, this team is inactive.</h2>
-                {% elif event.is_in_past %}
+               		 {% elif event.is_in_past %}
                     <h2>Sorry, this team is inactive.</h2>
-                {% elif event.is_awaiting_confirmation %}
+                		{% elif event.is_awaiting_confirmation %}
                     <h2>Sorry, the Team Leader has not yet confirmed this team.</h2>
-                    {% endwith %}
                 </div>
-                    {% endif %}
+                	{% endif %}
                 {% else %}
                     <h2>We&rsquo;ll confirm this team soon! Come back later.</h2>
                 {% endif %}
