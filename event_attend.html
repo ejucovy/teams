@@ -77,6 +77,15 @@
                             <p>Need to sign up with another email address?  <a href="?" onclick="window.actionkit.args = {}; return actionkit.forms.logOut()">Click here.</a></p>
                         </div>
                         {% endif %}
+
+                        <div id="ak-fieldbox-message" class="required ak-err-below">
+                          <label for="id_action_message" class="ak-is-overlaid" style="cursor: text; pointer-events: none;">
+                            Message<span class="ak-required-flag">*</span>
+                          </label>
+
+                          <textarea name="action_message" id="id_action_message" class="ak-userfield-input ak-has-overlay"></textarea>
+                        </div>
+                        
                         <!-- Allow for customization for a given event on the signup form -->
                         {% if templateset.custom_fields.event_user_form_code %}
                             {% include_tmpl templateset.custom_fields.event_user_form_code %}
@@ -99,7 +108,7 @@
                         <input type="hidden" name="event_signup_ground_rules" value="1">
                     {% endif %}
                     <div>
-                    <button type="submit" class="ak-submit-button">{% if update %}Update Membership{% else %}Join the team{% endif %}</button>
+                    <button type="submit" class="ak-submit-button">{% if update %}Update Membership{% else %}Contact This Team{% endif %}</button>
                     </div>
                 </div>   
                 <div class="event-share">
