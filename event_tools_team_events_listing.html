@@ -1,7 +1,8 @@
 <div class="event-listing">
   <div class="subA">Upcoming Events</div>
   <p id="no-team-upcoming-events" style="display: none">
-    Your team has no upcoming events.  Maybe start one!
+    Your team has no upcoming events.
+    <a href="https://go.peoplepower.org/signup/host_new/?source=team">Can you host an event?</a>
   </p>
   {% for ref in event.custom_fields.team_event_ids|split:"," %}
   {% with eventid=ref|split:":"|nth:1 campaignname=ref|split:":"|nth:0 %}
