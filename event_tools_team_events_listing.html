@@ -11,7 +11,7 @@
   {% for event in events %}
   {% if 1 or event.obj.starts_at_utc > now %}
   <p class="team-upcoming-event">
-    <a href="/{{ page_name }}/{{ event.id }}/signup/?no_redirect=1">{{ event.title }}</a>
+    <a href="/event/{{ page_name }}/{{ event.id }}/signup/?no_redirect=1">{{ event.title }}</a>
     <br />
     {{ event.starts_at }}<br />
     {{ event.venue }}<br />
