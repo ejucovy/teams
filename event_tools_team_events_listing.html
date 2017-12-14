@@ -9,7 +9,7 @@
   {% right_now %}
   {% withevents with campaignname as campaign eventid as event_id %}
   {% for event in events %}
-  {% if event.obj.starts_at_utc > now %}
+  {% if 1 or event.obj.starts_at_utc > now %}
   <p class="team-upcoming-event">
     <a href="/{{ page_name }}/{{ event.id }}/signup/?no_redirect=1">{{ event.title }}</a>
     <br />
