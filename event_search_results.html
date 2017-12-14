@@ -88,6 +88,12 @@
 <div class="ak-event-attendee-count-output">{{ event.attendee_count }} member{{ event.attendee_count|pluralize }}</div>
 </div>
 {% endif %}
+
+{% if event.custom_fields.team_event_ids %}
+<strong>Event count:</strong>
+<div>{{ event.custom_fields.team_event_ids|split:","|length }}</div>
+{% endif %}
+
 <div style="margin-bottom: 20px;">
 <strong>Lead{{ event.host_signups|length|pluralize }}:</strong>
 <div>{% for host in event.obj.host_signups %}{{host.user}}{% if not forloop.last%}, {%endif%}{%endfor%}</div>
