@@ -60,14 +60,18 @@
 </div> <!-- .map-getdir -->
 
 
-                        {% if event.starts_at %}
+                        {% if event.custom_fields.team_established_year %}
                         <div class="ak-event-time">
-						<strong>Date and time:</strong>
-                                                {% if event.custom_fields.event_time_changed %}
-						<div class="ak-event-time-entry" style="font-weight: bold; color: red">NEW: {{ event.starts_at }}</div>
-                                                {% else %}
-                                                <div class="ak-event-time-entry">{{ event.starts_at }}</div>
-                                                {% endif %}
+			  <strong>Established:</strong>
+                          <div class="ak-event-time-entry">
+                            {% if event.custom_fields.team_established_month %}
+                            {% with event.custom_fields.team_established_month|concatenate:"/"|concatenate:event.custom_fields.team_established_year|load_datetime:"%m/%Y"|date:"F Y" as established_on %}
+                            {{ established_on }}
+                            {% endwith %}
+                            {% else %}
+                            {{ event.custom_fields.team_established_year }}
+                            {% endif %}
+                          </div>
 			</div>
                         {% endif %}
 
