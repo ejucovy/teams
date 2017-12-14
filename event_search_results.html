@@ -90,8 +90,10 @@
 {% endif %}
 
 {% if event.custom_fields.team_event_ids %}
-<strong>Event count:</strong>
-<div>{{ event.custom_fields.team_event_ids|split:","|length }}</div>
+<div style="margin-bottom: 20px;">
+  <strong>Event count:</strong>
+  <div>{{ event.custom_fields.team_event_ids|split:","|length }}</div>
+</div>
 {% endif %}
 
 <div style="margin-bottom: 20px;">
