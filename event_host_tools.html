@@ -191,6 +191,10 @@
                         <li><a confirm-message="Really cancel event? This can't be undone." href="/event/{{ campaign.local_name }}/{{ event.id }}/cancel_event/">Cancel team</a></li>
                         <li><a href="/logout/">Log out</a></li>
                     </ul>
+
+                    {% include "event_tools_team_events_listing.html" %}
+
+                    
                 </div>
             </div><!-- bar holder -->
         </div><!-- span -->

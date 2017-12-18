@@ -15,12 +15,23 @@
 </div>
 
 <table class="ak-event-table">
-{% if event.get_starts_at_display %}
+
     <tr class="ak-event-time">
-        <th>When:</th>
-        <td>{{ event.get_starts_at_display }}{% if event.is_in_past %} <span class="ak-error ak-event-over-notice">(event is now over)</span>{% endif %}</td>
+        <th>Established:</th>
+        <td>
+          {% if event.custom_fields.team_established_year %}
+          {% if event.custom_fields.team_established_month %}
+          {% with event.custom_fields.team_established_month|concatenate:"/"|concatenate:event.custom_fields.team_established_year|load_datetime:"%m/%Y"|date:"F Y"|default:event.custom_fields.team_established_year as established_on %}
+          {{ established_on }}
+          {% endwith %}
+          {% else %}
+          {{ event.custom_fields.team_established_year }}
+          {% endif %}
+          {% endif %}
+
+        </td>
     </tr>
-{% endif %}
+
 {% if event.directions %}
     <tr class="ak-event-directions">
         <th>Directions:</th>

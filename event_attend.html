@@ -77,6 +77,15 @@
                             <p>Need to sign up with another email address?  <a href="?" onclick="window.actionkit.args = {}; return actionkit.forms.logOut()">Click here.</a></p>
                         </div>
                         {% endif %}
+
+                        <div id="ak-fieldbox-message" class="required ak-err-below">
+                          <label for="id_action_message" class="ak-is-overlaid" style="cursor: text; pointer-events: none;">
+                            Message<span class="ak-required-flag">*</span>
+                          </label>
+
+                          <textarea name="action_message" id="id_action_message" class="ak-userfield-input ak-has-overlay"></textarea>
+                        </div>
+                        
                         <!-- Allow for customization for a given event on the signup form -->
                         {% if templateset.custom_fields.event_user_form_code %}
                             {% include_tmpl templateset.custom_fields.event_user_form_code %}
@@ -99,16 +108,27 @@
                         <input type="hidden" name="event_signup_ground_rules" value="1">
                     {% endif %}
                     <div>
-                    <button type="submit" class="ak-submit-button">{% if update %}Update Membership{% else %}Join the team{% endif %}</button>
+                    <button type="submit" class="ak-submit-button">{% if update %}Update Membership{% else %}Contact This Team{% endif %}</button>
                     </div>
                 </div>   
                 <div class="event-share">
-		<div class="subA">Share</div>
-	   <div class="thanks-share-fb"><a class="buttonA3 icon-fb" href="https://www.facebook.com/sharer/sharer.php?u=https://go.peoplepower.org/event/{{ campaign.local_name }}/{{event.id}}/signup/?source=fbshare" target="_blank"><span class="box"><span class="icon"></span>Post to Facebook</a></span></div>
-<div class="thanks-share-twitter"><a class="buttonA3 icon-twitter" href="https://twitter.com/home?status=Join%20me%20for%20an%20%40ACLU%20People%20Power%20Action%20Event%20in%20{{ event.city_etc_no_postal }}%20https%3A//go.peoplepower.org/event/{{campaign.local_name}}/{{event.id}}/signup/?source=twshare" target="_blank"><span class="box"><span class="icon"></span>Share on Twitter</a></span></div>
-	</div>        
+	          <div class="subA">Share</div>
+                  <div class="thanks-share-fb">
+                    <a class="buttonA3 icon-fb ak-facebook"
+                       href="/share/link?type=fb&amp;page_name={{ event.campaign.signup_page.name }}&amp;append=../{{ event.id }}&amp;action_id={{action.id}}&amp;akid={{akid}}" target="_blank">
+                      <span class="box"><span class="icon"></span>Post to Facebook</a></span>
+                  </div>
+                  
+                  <div class="thanks-share-twitter">
+                    <a class="buttonA3 icon-twitter ak-twitter"
+                       -                       href="/share/link?type=tw&amp;page_name={{ event.campaign.signup_page.name }}&amp;append=../{{ event.id }}&amp;action_id={{action.id}}&amp;akid={{akid}}&amp;tweet={% if page.followup.twitter_message %}{% include_tmpl page.followup.twitter_message %}{% else %}Join me in a @ACLU People Power Action Team in {{ event.city_etc_no_postal }}{% endif %}" target="_blank">
+                      <span class="box"><span class="icon"></span>Share on Twitter</a></span>
+                  </div>
+                  
+                </div>
             </div>
         </div>
+</div>
 <div class="ak-grid-row">
 <div class="ak-grid-col ak-grid-col-12-of-12">
 {% if campaign.show_address1 %}

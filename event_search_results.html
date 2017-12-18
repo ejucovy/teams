@@ -60,14 +60,18 @@
 </div> <!-- .map-getdir -->
 
 
-                        {% if event.starts_at %}
+                        {% if event.custom_fields.team_established_year %}
                         <div class="ak-event-time">
-						<strong>Date and time:</strong>
-                                                {% if event.custom_fields.event_time_changed %}
-						<div class="ak-event-time-entry" style="font-weight: bold; color: red">NEW: {{ event.starts_at }}</div>
-                                                {% else %}
-                                                <div class="ak-event-time-entry">{{ event.starts_at }}</div>
-                                                {% endif %}
+			  <strong>Established:</strong>
+                          <div class="ak-event-time-entry">
+                            {% if event.custom_fields.team_established_month %}
+                            {% with event.custom_fields.team_established_month|concatenate:"/"|concatenate:event.custom_fields.team_established_year|load_datetime:"%m/%Y"|date:"F Y"|default:event.custom_fields.team_established_year as established_on %}
+                            {{ established_on }}
+                            {% endwith %}
+                            {% else %}
+                            {{ event.custom_fields.team_established_year }}
+                            {% endif %}
+                          </div>
 			</div>
                         {% endif %}
 
@@ -84,6 +88,14 @@
 <div class="ak-event-attendee-count-output">{{ event.attendee_count }} member{{ event.attendee_count|pluralize }}</div>
 </div>
 {% endif %}
+
+{% if event.custom_fields.team_event_ids %}
+<div style="margin-bottom: 20px;">
+  <strong>Event count:</strong>
+  <div>{{ event.custom_fields.team_event_ids|split:","|length }} event{{ event.custom_fields.team_event_ids|split:","|length|pluralize }}</div>
+</div>
+{% endif %}
+
 <div style="margin-bottom: 20px;">
 <strong>Lead{{ event.host_signups|length|pluralize }}:</strong>
 <div>{% for host in event.obj.host_signups %}{{host.user}}{% if not forloop.last%}, {%endif%}{%endfor%}</div>

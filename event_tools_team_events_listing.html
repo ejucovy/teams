@@ -1,0 +1,33 @@
+<div class="event-listing">
+  <div class="subA">Upcoming Events</div>
+  <p id="no-team-upcoming-events" style="display: none">
+    Your team has no upcoming events.
+    <a href="https://go.peoplepower.org/signup/host_new/?source=team">Can you host an event?</a>
+  </p>
+  {% for ref in event.custom_fields.team_event_ids|split:"," %}
+  {% with eventid=ref|split:":"|nth:1 campaignname=ref|split:":"|nth:0 %}
+  {% right_now %}
+  {% withevents with campaignname as campaign eventid as event_id %}
+  {% for event in events %}
+  {% if event.obj.starts_at_utc > now %}
+  <p class="team-upcoming-event">
+    <a href="/event/{{ page_name }}/{{ event.id }}/signup/?no_redirect=1">{{ event.title }}</a>
+    <br />
+    {{ event.starts_at }}<br />
+    {{ event.venue }}<br />
+    {{ event.city }}, {{ event.state }}</p>
+    {% endif %}
+    {% endfor %}
+    {% endwithevents %}
+    {% endwith %}
+    {% endfor %}
+  </p>
+  <script type="text/javascript">
+   $(window).load(function() {
+       if ($(".team-upcoming-event").length === 0) {
+           $("#no-team-upcoming-events").slideDown();
+       }
+   });
+  </script>
+</div>
+

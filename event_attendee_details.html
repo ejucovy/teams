@@ -32,19 +32,24 @@
 
 
     <div class="ak-event-table">
-    {% if event.get_starts_at_display %}
+
         <div class="ak-event-time">
-            <div class="subB">When:</div>
-            <div {% if event.custom_fields.event_time_changed %}style="font-weight: bold; color: red"{% endif %}>
-              {% if event.custom_fields.event_time_changed %}NEW: {% endif %}{{ event.get_starts_at_display }}
-              {% if event.is_in_past %}
-              <span class="ak-error ak-event-over-notice">
-                (team is now inactive)
-              </span>
-              {% endif %}
-            </div>
+                        {% if event.custom_fields.team_established_year %}
+                        <div class="ak-event-time">
+			  <div class="subB">Established:</div>
+                          <div class="ak-event-time-entry">
+                            {% if event.custom_fields.team_established_month %}
+                            {% with event.custom_fields.team_established_month|concatenate:"/"|concatenate:event.custom_fields.team_established_year|load_datetime:"%m/%Y"|date:"F Y"|default:event.custom_fields.team_established_year as established_on %}
+                            {{ established_on }}
+                            {% endwith %}
+                            {% else %}
+                            {{ event.custom_fields.team_established_year }}
+                            {% endif %}
+                          </div>
+			</div>
+                        {% endif %}
         </div> <!-- .ak-event-time -->
-    {% endif %}
+
     {% if event.directions %}
         <div class="ak-event-directions">
             <div class="subB">Directions to meeting:</div>
